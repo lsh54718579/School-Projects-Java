@@ -1,0 +1,15 @@
+/**
+ * Special exception class extended from general exception class. 
+ * @author Sihang Li
+ *
+ */
+public class Date212Exception extends IllegalArgumentException {
+	String myMessage;
+	public Date212Exception(String s) {
+		myMessage=s;
+		}
+	public String getMessage() {
+		return myMessage;
+		
+	}
+}
