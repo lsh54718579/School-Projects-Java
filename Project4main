@@ -1,0 +1,10 @@
+/**
+ * This class instantiates the DateGUI class and contains a main method which will call myGUI and pass
+ * a line of prompt to it. 
+ * @author Sihang Li
+ */
+public class Project4 {
+	public static void main (String args[]) {
+		DateGUI myGUI= new DateGUI(" Please open a file that contains some dates. ");
+	}
+}
