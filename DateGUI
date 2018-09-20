@@ -1,0 +1,128 @@
+/**
+ * This class has a constructor that sets the parameters of a GUI panel. 
+ * It also contains a createFileMenu method which will call the FileMenuHandler to perform actions. 
+ */
+import javax.swing.*;
+import java.io.File;
+import java.awt.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+
+public class DateGUI extends JFrame {
+	TreeMap <Date212, String> unsortedTreeMap= new TreeMap <Date212, String>(new DummyDateComparator());
+	TreeMap <Date212, String> sortedTreeMap= new TreeMap<Date212, String> (new DateComparator());
+	Container myContentPane2 = this.getContentPane();
+	static JTextArea myTextArea = new JTextArea();
+	static JTextArea myTextArea2 = new JTextArea();
+	/**
+	 * This DateGUI constructor receives a string from the main method. 
+	 * It also sets the title, size, and location of the GUI panel. 
+	 * @param s
+	 */
+   public DateGUI(String s) {
+	   Container myContentPane = this.getContentPane();
+	   JTextArea myTextArea = new JTextArea();
+	    myContentPane.add(myTextArea, BorderLayout.CENTER);
+	    setTitle("My Dates");
+	    setSize(300,300);
+        setLocation (400,200);
+        myTextArea.setText(s);
+        createFileMenu();
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+
+   } //DateGUI Constructor 
+
+   /**
+    * This method creates a menubar, a filemenu, an editmenu and three items which will allow user to click on.
+    * Userinput will be passed to the FileMenuHanlder or EditMenuHandler to perform its corresponding action. 
+    */
+   private void createFileMenu( ) {
+      JMenuItem   item;
+      JMenuBar    menuBar  = new JMenuBar();
+      JMenu       fileMenu = new JMenu("File");
+      FileMenuHandler fmh  = new FileMenuHandler();
+      item = new JMenuItem("Open");    //Open...
+      item.addActionListener( fmh );
+      fileMenu.add( item );
+      fileMenu.addSeparator();           //add a horizontal separator line
+      item = new JMenuItem("Quit");       //Quit
+      item.addActionListener( fmh );
+      fileMenu.add( item );
+      setJMenuBar(menuBar);
+      menuBar.add(fileMenu);
+      }
+	
+	/**
+	 *Allows user to choose a file to open. 
+	 *Calls the readSource method with the chosen file if there is one. 
+	 *Handles the error when user clicks on cancel or closes the window. 
+	 */
+	public void openFile( ) {
+		  int status;
+		  JFileChooser chooser = new JFileChooser( );
+		  status = chooser.showOpenDialog(null);
+		  if ( status== JFileChooser.APPROVE_OPTION)
+		  readSource(chooser.getSelectedFile());
+		  else if ( status==JFileChooser.CANCEL_OPTION)
+			  System.out.println("You canceled file selection.");
+		} //openFile
+	
+   /**
+    * Reads the file. 
+    * Puts the dates of type Date212 to my treemaps and display them in GUI if they are valid.
+    * Catches the exception if the dates are invalid.  
+    * Calls the printGUI method to print the date lists in GUI. 
+    * @param chosenFile
+    */
+   private void readSource(File chosenFile) {
+	   String chosenFileName=chosenFile.getAbsolutePath();
+	   TextFileInput inFile = new TextFileInput(chosenFileName);
+	   Date212 myDates;
+	   String tempSt = new String();
+	   String Dates=inFile.readLine();
+	   while (Dates!=null) {
+			StringTokenizer st= new StringTokenizer(Dates,",");
+			while  (st.hasMoreTokens()) {	//loops until there is no more token in the file. 
+				tempSt=st.nextToken();
+				try {
+				myDates=new Date212 (tempSt);
+				   unsortedTreeMap.put(myDates, "");
+				   sortedTreeMap.put(myDates, "");	
+				}
+				catch (Date212Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+			Dates=inFile.readLine();
+   		}
+	   printGUI();
+  }
+   /**
+    * Gets dates from the global unSortedTreeMap and SortedTreeMap.
+    * Prints the dates.  
+    */
+   private void printGUI() {
+	   Set<Entry<Date212, String>> setUnsorted = unsortedTreeMap.entrySet();
+	   Set<Entry<Date212, String>> setSorted = sortedTreeMap.entrySet();
+	   Iterator<Entry<Date212, String>> i = setUnsorted.iterator();
+	   Iterator<Entry<Date212, String>> j = setSorted.iterator();
+	   Map.Entry<Date212, String> unsortedme; 
+	   Map.Entry<Date212, String> sortedme; 
+	   myContentPane2.add(myTextArea, BorderLayout.WEST);
+	   myContentPane2.add(myTextArea2, BorderLayout.EAST);
+	   myTextArea.setText("  Unsorted Dates"+"\n");
+	   myTextArea2.setText("  Sorted Dates "+"\n");
+	   while (i.hasNext()) {
+		   unsortedme = (Entry<Date212, String>) i.next();
+		   sortedme = (Entry<Date212, String>) j.next();
+		   myTextArea.append(unsortedme.getKey().toString()+"\n");
+		   myTextArea2.append(sortedme.getKey().toString()+"\n");	
+	   }
+   }
+
+}
