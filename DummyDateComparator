@@ -1,0 +1,13 @@
+import java.util.Comparator;
+/**
+ * A dummy comparator that essentially returns a value that does not mean anything to the comparator. 
+ * Therefore keeps the order the keys are put into the treemap without sorting them in any specific order. 
+ * @author SimonLi
+ *
+ */
+public class DummyDateComparator implements Comparator <Date212> {
+	public int compare(Date212 date1, Date212 date2) {
+		return 3;
+	}
+
+}
