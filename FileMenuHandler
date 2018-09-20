@@ -1,0 +1,25 @@
+/**
+ * This class contains a class constructor, a method called ActionPerformed, a method called openFile, and a method called readSource. 
+ */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class FileMenuHandler implements ActionListener {
+    	DateGUI myGUI;
+
+	/**
+	 * Determines what action user wants to execute. Calls the openFile() method in class DateGUI if that is the action user wants to execute.
+	 * Otherwise terminates the program.  
+	 */
+	public void actionPerformed(ActionEvent event) {
+	      String  menuName;
+	      menuName = event.getActionCommand();
+	      if (menuName.equals("Open")) {
+	    	     myGUI=new DateGUI("");
+	         myGUI.openFile( ); 
+	      }
+	      else if (menuName.equals("Quit"))
+	         System.exit(0);
+	   } //actionPerformed
+
+}
